@@ -113,6 +113,13 @@ class Customer {
     visitRound: visitRound,
     balance: balance ?? this.balance,
   );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Customer && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class VehicleSettings {
