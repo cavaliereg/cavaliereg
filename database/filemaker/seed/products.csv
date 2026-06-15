@@ -1,5 +1,5 @@
 product_id,code,name,description,price,vat_rate,stock,image_seed,active
 p-001,LAT-001,Latte UHT intero,Cartone 1L - prodotto fresco a lunga conservazione,1.38,4,120,🥛,1
 p-002,PAS-250,Pasta semola 500g,Formato penne rigate,0.92,4,90,🍝,1
-p-003,OLI-075,Olio EVO 0.75L,"Bottiglia vetro, extra vergine",7.85,4,36,🫒,1
+p-003,OLI-075,"Olio EVO 0,75L","Bottiglia vetro, extra vergine",7.85,4,36,🫒,1
 p-004,BIS-300,Biscotti frollini,Confezione 300g,2.15,10,64,🍪,1

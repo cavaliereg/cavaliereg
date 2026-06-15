@@ -21,7 +21,7 @@ Set Variable [ $prefix ;
     "D"
   )
 ]
-Set Variable [ $sequence ; Right ( "00000" & ( Get ( FoundCount ) + 1 ) ; 5 ) ]
+Set Variable [ $sequence ; Right ( "00000" & ( Get ( TotalRecordCount ) + 1 ) ; 5 ) ]
 Set Variable [ $number ; $prefix & "-" & Year ( Get ( CurrentDate ) ) & "-" & $sequence ]
 Exit Script [ Text Result: $number ]
 ```
@@ -35,11 +35,14 @@ Logic:
 ```text
 New Record/Request in sales_documents
 Set Field [ sales_documents::document_id ; Get ( UUID ) ]
+Set Field [ sales_documents::kind ; $kind ]
+Set Field [ sales_documents::customer_id ; $customer_id ]
 Set Field [ sales_documents::document_number ; Perform Script [ "New DDT Number" ] ]
 Set Field [ sales_documents::created_at ; Get ( CurrentTimestamp ) ]
 Set Field [ sales_documents::sync_status ; "daSincronizzare" ]
 Set Field [ sales_documents::printed ; 1 ]
 Set Field [ sales_documents::cancelled ; 0 ]
+Set Field [ sales_documents::movement_reason ; $movement_reason ]
 
 For each selected product:
   New Record/Request in document_lines
@@ -49,7 +52,6 @@ For each selected product:
   Set Field [ document_lines::quantity ; selected quantity ]
   Set Field [ document_lines::unit_price ; products::price ]
   Set Field [ document_lines::vat_rate ; products::vat_rate ]
-  Set Field [ document_lines::line_total ; quantity * unit_price ]
   Set Field [ products::stock ; products::stock - quantity ]
 
 Perform Script [ "Enqueue Sync Item" ; "Invio PDF " & sales_documents::document_number ]
@@ -92,8 +94,14 @@ Perform Find
 Replace Field Contents [ sync_queue::status ; "sincronizzato" ]
 
 Go to Layout [ sales_documents ]
+Enter Find Mode [ Pause: Off ]
+Set Field [ sales_documents::sync_status ; "daSincronizzare" ]
+Perform Find
 Replace Field Contents [ sales_documents::sync_status ; "sincronizzato" ]
 
 Go to Layout [ payments ]
+Enter Find Mode [ Pause: Off ]
+Set Field [ payments::sync_status ; "daSincronizzare" ]
+Perform Find
 Replace Field Contents [ payments::sync_status ; "sincronizzato" ]
 ```
