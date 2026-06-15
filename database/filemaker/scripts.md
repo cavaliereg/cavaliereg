@@ -30,9 +30,22 @@ Exit Script [ Text Result: $number ]
 
 Purpose: create a document header and related line records.
 
+Inputs:
+
+- `kind`, `customer_id`, and optional `movement_reason`.
+- selected products with quantities.
+
 Logic:
 
 ```text
+Set Variable [ $kind_label ;
+  Case (
+    $kind = "ddtContoProprio" ; "DDT vendita conto proprio" ;
+    $kind = "ddtContoTerzi" ; "DDT conto terzi" ;
+    $kind = "movimentoMagazzino" ; "DDT movimentazione merci" ;
+    "DDT"
+  )
+]
 New Record/Request in sales_documents
 Set Field [ sales_documents::document_id ; Get ( UUID ) ]
 Set Field [ sales_documents::kind ; $kind ]
@@ -54,16 +67,24 @@ For each selected product:
   Set Field [ document_lines::vat_rate ; products::vat_rate ]
   Set Field [ products::stock ; products::stock - quantity ]
 
-Perform Script [ "Enqueue Sync Item" ; "Invio PDF " & sales_documents::document_number ]
+Perform Script [ "Enqueue Sync Item" ; "Invio PDF " & $kind_label & " " & sales_documents::document_number ]
 ```
 
 ## Register Payment
 
 Purpose: record payment, update customer balance, and queue sync.
 
+Inputs:
+
+- `customer_id`, `amount`, `method`, and optional `electronic_reference`.
+
 ```text
 New Record/Request in payments
 Set Field [ payments::payment_id ; Get ( UUID ) ]
+Set Field [ payments::customer_id ; $customer_id ]
+Set Field [ payments::amount ; $amount ]
+Set Field [ payments::method ; $method ]
+Set Field [ payments::electronic_reference ; $electronic_reference ]
 Set Field [ payments::created_at ; Get ( CurrentTimestamp ) ]
 Set Field [ payments::sync_status ; "daSincronizzare" ]
 Set Field [ customers::balance ; customers::balance - payments::amount ]
