@@ -1,0 +1,1 @@
+payment_id,customer_id,amount,method,created_at,sync_status,electronic_reference,receipt_pdf_path

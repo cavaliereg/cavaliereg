@@ -1,0 +1,12 @@
+1. seed/document_kinds.csv
+2. seed/movement_reasons.csv
+3. seed/payment_methods.csv
+4. seed/sync_statuses.csv
+5. seed/vehicle_settings.csv
+6. seed/app_settings.csv
+7. seed/products.csv
+8. seed/customers.csv
+9. seed/sales_documents.csv
+10. seed/document_lines.csv
+11. seed/payments.csv
+12. seed/sync_queue.csv

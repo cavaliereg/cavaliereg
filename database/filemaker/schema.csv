@@ -1,0 +1,80 @@
+table,field,type,options,notes
+products,product_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+products,code,Text,"Validate unique; not empty",Product code used by agents
+products,name,Text,Not empty,Product display name
+products,description,Text,,Commercial description
+products,price,Number,Not empty,Unit price
+products,vat_rate,Number,Not empty,VAT percent
+products,stock,Number,Not empty,Traveling depot stock
+products,image_seed,Text,,Emoji or image token from mobile demo
+products,active,Number,"Auto-enter 1",Boolean
+products,updated_at,Timestamp,"Auto-enter modification timestamp",Last update
+customers,customer_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+customers,code,Text,"Validate unique; not empty",Customer code
+customers,business_name,Text,Not empty,Ragione sociale
+customers,address,Text,,Street address
+customers,city,Text,,City
+customers,vat_number,Text,,Partita IVA
+customers,visit_round,Text,,Giro visita
+customers,balance,Number,"Auto-enter 0",Open balance
+customers,active,Number,"Auto-enter 1",Boolean
+customers,updated_at,Timestamp,"Auto-enter modification timestamp",Last update
+vehicle_settings,vehicle_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+vehicle_settings,plate,Text,Not empty,Targa automezzo
+vehicle_settings,zone_agent,Text,,Zona agente
+vehicle_settings,traveling_depot,Text,Not empty,Deposito viaggiante
+app_settings,settings_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+app_settings,agent_name,Text,Not empty,Agent name
+app_settings,agent_code,Text,Not empty,Agent code
+app_settings,company_name,Text,Not empty,Azienda cedente
+app_settings,company_vat,Text,,Partita IVA azienda
+app_settings,company_address,Text,,Address
+app_settings,vehicle_id,Text,Not empty,Foreign key to vehicle_settings
+app_settings,daily_password_hash,Text,,SHA-256 hash of the daily password
+app_settings,agent_signature,Container,,Firma grafica agente
+document_kinds,kind_code,Text,"Validate unique; not empty",Primary key
+document_kinds,label,Text,Not empty,Display label
+document_kinds,shows_prices,Number,Not empty,Boolean
+movement_reasons,reason_code,Text,"Validate unique; not empty",Primary key
+movement_reasons,label,Text,Not empty,Display label
+payment_methods,method_code,Text,"Validate unique; not empty",Primary key
+payment_methods,label,Text,Not empty,Display label
+payment_methods,is_cash,Number,Not empty,Boolean
+sync_statuses,status_code,Text,"Validate unique; not empty",Primary key
+sync_statuses,label,Text,Not empty,Display label
+sales_documents,document_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+sales_documents,document_number,Text,"Validate unique; not empty",Format V-YYYY-00001 / T-YYYY-00001 / M-YYYY-00001
+sales_documents,kind,Text,Not empty,Foreign key to document_kinds
+sales_documents,customer_id,Text,Not empty,Foreign key to customers
+sales_documents,created_at,Timestamp,"Auto-enter creation timestamp",Creation date/time
+sales_documents,sync_status,Text,Not empty,Foreign key to sync_statuses
+sales_documents,printed,Number,"Auto-enter 0",Boolean
+sales_documents,cancelled,Number,"Auto-enter 0",Boolean
+sales_documents,movement_reason,Text,,Foreign key to movement_reasons
+sales_documents,customer_signature,Container,,Firma cliente
+sales_documents,pdf,Container,,Generated PDF attachment
+sales_documents,pdf_path,Text,,Mobile/local PDF path
+sales_documents,total,Calculation,"Sum ( document_lines::line_total )",Document total
+sales_documents,total_pieces,Calculation,"Sum ( document_lines::quantity )",Total quantity
+document_lines,document_line_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+document_lines,document_id,Text,Not empty,Foreign key to sales_documents
+document_lines,product_id,Text,Not empty,Foreign key to products
+document_lines,quantity,Number,Not empty,Quantity
+document_lines,unit_price,Number,Not empty,Price copied at document time
+document_lines,vat_rate,Number,Not empty,VAT copied at document time
+document_lines,line_total,Calculation,"quantity * unit_price",Line total
+payments,payment_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+payments,customer_id,Text,Not empty,Foreign key to customers
+payments,amount,Number,Not empty,Payment amount
+payments,method,Text,Not empty,Foreign key to payment_methods
+payments,created_at,Timestamp,"Auto-enter creation timestamp",Creation date/time
+payments,sync_status,Text,Not empty,Foreign key to sync_statuses
+payments,electronic_reference,Text,,Reference for non-cash payments
+payments,receipt_pdf,Container,,Receipt PDF attachment
+payments,receipt_pdf_path,Text,,Mobile/local receipt path
+sync_queue,sync_queue_id,Text,"Auto-enter Get ( UUID ); validate unique; not empty",Primary key
+sync_queue,description,Text,Not empty,Task description
+sync_queue,created_at,Timestamp,"Auto-enter creation timestamp",Creation date/time
+sync_queue,pdf,Container,,Related PDF attachment
+sync_queue,pdf_path,Text,,Mobile/local PDF path
+sync_queue,status,Text,Not empty,Foreign key to sync_statuses

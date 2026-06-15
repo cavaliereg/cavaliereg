@@ -1,0 +1,6 @@
+method_code,label,is_cash
+contanti,Contanti,1
+carta,Carta,0
+bancomat,Bancomat,0
+bonifico,Bonifico,0
+altroElettronico,Altro elettronico,0

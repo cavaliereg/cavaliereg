@@ -1,0 +1,4 @@
+kind_code,label,shows_prices
+ddtContoProprio,DDT vendita conto proprio,1
+ddtContoTerzi,DDT conto terzi,0
+movimentoMagazzino,DDT movimentazione merci,0
